@@ -1,0 +1,77 @@
+
+@font-face {
+    font-family: "Rothwood";
+    src: url(../media/fonts/Rothwood-Book.otf);
+}
+
+
+body {
+    text-align: center;
+    font-family: 'Rothwood';
+}
+
+form {
+    margin-inline: auto;
+}
+
+table {
+    margin-inline: auto;
+}
+
+h1 {
+
+}
+
+h2 {
+    font-size: 4vw;
+}
+
+h3 {
+    font-size: 3vw;
+}
+
+h4 {
+    font-size: 2vw;
+}
+
+header {
+    height: 10vh;
+    background-color: blueviolet;
+    display: flex;
+    justify-content: space-between;
+}
+
+header:only-child {
+    flex: 1;
+}
+
+#rolImagen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+}
+
+#imagen {
+    height: 8vh;
+}
+
+main {
+
+}
+
+
+
+
+#principal {
+    background-color: azure;
+}
+
+table, tr, td {
+    border: solid 1px black;
+    border-collapse: collapse;
+}
+
+th {
+    padding-right: 2vw;
+}

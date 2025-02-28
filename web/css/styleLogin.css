@@ -1,0 +1,84 @@
+@font-face {
+    font-family: "Rothwood";
+    src: url(../media/fonts/Rothwood-Book.otf);
+}
+
+
+body {
+    text-align: center;
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(../media/img/campo.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Rothwood';
+    color: #ffffff;
+}
+
+#pantalla {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95vw;
+    height: 95vh;
+}
+
+h1 {
+    background-color: #00d315;
+    margin: 0;
+    padding: 10px;
+    color: #ffffff;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+
+#cuadroForm {
+    background-color: #181818;
+    width: 50vw;
+    height: 70vh;
+    border: 4px solid black;
+    border-radius: 8px;
+    position: relative;
+}
+
+label {
+    font-size: 2vw;
+}
+
+input[type=text], input[type=password], input[type=email] {
+    width: 80%;
+    height: 5vh;
+    background-color: #393939;
+    border: black 2px solid;
+    border-radius: 4px;
+    color: white;
+    font-size: 1.3vw;
+    font-family: 'Rothwood';
+}
+
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus {
+    background-color: #111111;
+}
+
+input[type=submit] {
+    width: 100%;
+    border: unset;
+    background-color: #00720b;
+    align-items: baseline;
+    color: white;
+    height: 10vh;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2vw;
+    font-family: 'Rothwood';
+    transition: background-color, border-radius 0.5s;
+}
+
+input[type=submit]:hover {
+    background-color: rgb(89, 185, 0);
+    transition: all 1s;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+}
