@@ -5,8 +5,11 @@
  */
 package Controlador;
 
+import ConexionABD.UsuarioDML;
+import Modelo.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -35,21 +38,60 @@ public class Controlador extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         
-        HttpSession session = request.getSession(false);
-        
+        Connection conexion = ConexionABD.Conexion.getConexion();
         String nextPage = "";
         String todo = request.getParameter("todo");
         
         
-        if (todo == "inicioSesion") {
-            nextPage = "/menu.jsp";
-        } else if (todo == "registroUsuario") {
+        
+        
+        if (todo.equals("inicioSesion")) {
+            String email = request.getParameter("email");
+            String contra = request.getParameter("contra");
+            
+            Usuario usuario = UsuarioDML.obtenerUsuario(conexion, email, contra);
+            
+            if (usuario != null) {
+                HttpSession session = request.getSession(true);
+                session.setAttribute("id", usuario.getId());
+                session.setAttribute("nombre", usuario.getNombre());
+                session.setAttribute("email", usuario.getEmail());
+                session.setAttribute("contrasenna", usuario.getContrasenna());
+                session.setAttribute("tipo", usuario.getTipo());
+                
+                // Redirigir según el tipo de usuario
+                switch (usuario.getTipo()) {
+                    case "Administrador":
+                        nextPage = "/administrador.jsp";
+                        break;
+                    case "Agricultor":
+                        nextPage = "/agricultor.jsp";
+                        break;
+                    case "Maquinista":
+                        nextPage = "/maquinista.jsp";
+                        break;
+                    default:
+                        nextPage = "/sinAlta.jsp";
+                }
+            } else {
+                request.setAttribute("error", "Usuario o contraseña incorrectos");
+                nextPage = "/login.jsp";
+            }
+            
+            
+        } else if (todo.equals("registroUsuario")) {
+            String nombre = request.getParameter("nombre");
+            String apellidos = request.getParameter("apellidos");
+            String email = request.getParameter("email");
+            String contrasenna = request.getParameter("contra");
+            
+            UsuarioDML.insertar(conexion, nombre, apellidos, email, contrasenna);
             nextPage = "/login.jsp";
-        } else if (todo == "") {
+        } else if (todo.equals("")) {
             
-        } else if (todo == "") {
+        } else if (todo.equals("")) {
             
-        } else if (todo == "") {
+        } else if (todo.equals("")) {
             
         }
         

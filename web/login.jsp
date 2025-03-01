@@ -18,7 +18,9 @@
 
    
     <div id="pantalla">
-
+        <% if (request.getAttribute("error") != null) { %>
+            <p style="color:red;"><%= request.getAttribute("error") %></p>
+        <% } %>
         <div id="cuadroForm">
 
             <h1>AGRIWARE<img src="media/img/agricultor.png" alt="" width="30" height="30"></h1>

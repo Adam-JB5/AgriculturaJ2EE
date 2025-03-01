@@ -18,11 +18,11 @@ import java.util.ArrayList;
  */
 public class UsuarioDML {
     
-    public static boolean insertar(Connection BD, int id, String nombre, String apellidos, String email, String contrasenna, String tipo) {
+    public static boolean insertar(Connection BD, String nombre, String apellidos, String email, String contrasenna) {
         try {
             Statement st = BD.createStatement();
             
-            st.executeUpdate("INSERT INTO usuarios(ID, Nombre, Apellidos, Email, Contraseña, Tipo) VALUES ('" + id + "', '" + nombre + "', '" + apellidos + "', '" + email + "', '" + contrasenna + "', '" + tipo + "')");
+            st.executeUpdate("INSERT INTO usuarios(Nombre, Apellidos, Email, Contraseña) VALUES ('" + nombre + "', '" + apellidos + "', '" + email + "', '" + contrasenna + "')");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -63,4 +63,30 @@ public class UsuarioDML {
             return false;
         }
     }
+    
+//  Este metodo se usa para validar si existe el usuario. Si existe se obtienen todos sus atributos
+    public static Usuario obtenerUsuario(Connection BD, String email, String contra) {
+        String consulta = "SELECT * FROM usuarios WHERE Email = '" + email + "' AND Contraseña = '" + contra + "'";
+        Usuario usuario = null;
+        try (Statement st = BD.createStatement(); ResultSet rs = st.executeQuery(consulta);) {
+            
+            if (rs.next()) {
+                usuario = new Usuario(
+                    rs.getInt("ID"),
+                    rs.getString("Nombre"),
+                    rs.getString("Apellidos"),
+                    rs.getString("Email"),
+                    rs.getString("Contraseña"),
+                    rs.getString("Tipo")
+                );
+                
+            }
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuario;
+    }
+    
+    
 }
