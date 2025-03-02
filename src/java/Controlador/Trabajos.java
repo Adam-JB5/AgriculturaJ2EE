@@ -93,6 +93,8 @@ public class Trabajos extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             TrabajoDML.finalizarTrabajo(conexion,estado, fechaFin, id);
             nextPage = "/maquinista.jsp";
+        } else if (todo.equals("gestionTrabajos")) {
+            
         }
         
         

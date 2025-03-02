@@ -5,25 +5,22 @@
  */
 package Controlador;
 
-import ConexionABD.FacturaDML;
-import Modelo.Factura;
+import ConexionABD.UsuarioDML;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author adamj
  */
-public class Facturas extends HttpServlet {
+public class Usuarios extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,23 +39,21 @@ public class Facturas extends HttpServlet {
         String nextPage = "";
         String todo = request.getParameter("todo");
         
-        if (todo.equals("pagoFacturaPagina")) {
-            HttpSession session = request.getSession();
-            int idAgricultor = (int) session.getAttribute("id");
-            List<Factura> facturas = FacturaDML.listarFacturasPorPagar(conexion, idAgricultor);
-            List<Factura> facturasPagadas = FacturaDML.listarFacturasPagadas(conexion, idAgricultor);
+        if (todo.equals("actualizarUsuario")) {
+            int idUsuario = Integer.parseInt(request.getParameter("id"));
+            String nombre = request.getParameter("nombre");
+            String apellidos = request.getParameter("apellidos");
+            String email = request.getParameter("email");
+            String contrasenna = request.getParameter("contrasenna");
+            String tipo = request.getParameter("tipo");
             
-            request.setAttribute("facturasPorPagar", facturas);
-            request.setAttribute("facturasPagadas", facturasPagadas);
-            nextPage = "/pagarFacturas.jsp";
-        } else if (todo.equals("pagoFactura")) {
-            int idFactura = Integer.parseInt(request.getParameter("id"));
-            FacturaDML.pagarFactura(conexion, idFactura);
-            nextPage = "/agricultor.jsp";
-        } else if (todo.equals("gestionFacturas")) {
-            
+            UsuarioDML.actualizarUsuario(conexion, nombre, apellidos, email, contrasenna, tipo, idUsuario);
+            nextPage = "/administrador.jsp";
+        } else if (todo.equals("eliminarUsuario")) {
+            int idUsuario = Integer.parseInt(request.getParameter("id"));
+            UsuarioDML.eliminar(conexion, idUsuario);
+            nextPage = "/administrador.jsp";
         }
-        
         
         ServletContext servletContext = getServletContext();
         RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(nextPage);

@@ -52,6 +52,18 @@ public class UsuarioDML {
         return lista;
     }
     
+    public static boolean actualizarUsuario(Connection BD, String nombre, String apellidos, String email, String contrasenna, String tipo, int idUsuario) {
+        try {
+            Statement st = BD.createStatement();
+            
+            st.executeUpdate("UPDATE usuarios SET Nombre='" + nombre + "', Apellidos='" + apellidos + "', Email='" + email + "', Contraseña='" + contrasenna + "', Tipo='" + tipo + "' WHERE ID='" + idUsuario + "'");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public static boolean eliminar(Connection BD, int id) {
         try {
             Statement st = BD.createStatement();
