@@ -18,11 +18,11 @@ import java.util.ArrayList;
  */
 public class FacturaDML {
     
-    public static boolean insertar(Connection BD, int idTrabajo, double dinero, String estado, String fechaEmision, String fechaPago) {
+    public static boolean insertar(Connection BD, int idTrabajo, double dinero, String estado, String fechaEmision) {
         try {
             Statement st = BD.createStatement();
             
-            st.executeUpdate("INSERT INTO facturas(ID_Trabajo, Dinero, Estado, Fecha_Emision, Fecha_Pago) VALUES ('" + idTrabajo + "','" + dinero + "','" + estado + "','" + fechaEmision + "','" + fechaPago + "')");
+            st.executeUpdate("INSERT INTO facturas(ID_Trabajo, Dinero, Estado, Fecha_Emision) VALUES ('" + idTrabajo + "','" + dinero + "','" + estado + "','" + fechaEmision + "')");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

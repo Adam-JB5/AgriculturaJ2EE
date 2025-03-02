@@ -85,6 +85,36 @@ public class ParcelaDML {
         }
     }
     
+    public static double obtenerSuperficieParcela(Connection BD, int idParcela) {
+        try {
+            Statement st = BD.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT Superficie FROM parcelas WHERE ID = '" + idParcela + "'");
+            if (rs.next()) {
+                return rs.getDouble("Superficie");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    
+    public static double obtenerPrecioHectarea(Connection BD, String tipoTrabajo) {
+        try {
+            Statement st = BD.createStatement();
+            
+            ResultSet rs = st.executeQuery("SELECT Precio_por_Hectarea FROM precios_trabajos WHERE Tipo_Trabajo = '" + tipoTrabajo + "'");
+            
+            if (rs.next()) {
+                return rs.getDouble("Precio_por_Hectarea");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
     public static boolean eliminar(Connection BD, int id) {
         try {
             Statement st = BD.createStatement();
