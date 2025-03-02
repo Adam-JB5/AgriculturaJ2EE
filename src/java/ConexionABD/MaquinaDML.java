@@ -51,6 +51,18 @@ public class MaquinaDML {
         return lista;
     }
     
+    public static boolean actualizarMaquina(Connection BD, String tipo, String estado, int idMaquina) {
+        try {
+            Statement st = BD.createStatement();
+            
+            st.executeUpdate("UPDATE maquinas SET Tipo = '" + tipo + "', Estado = '" + estado + "' WHERE ID = '" + idMaquina + "'");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public static boolean liberarMaquina(Connection BD, int idMaquina) {
         try {
             Statement st = BD.createStatement();

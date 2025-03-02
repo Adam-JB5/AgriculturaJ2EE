@@ -6,7 +6,9 @@
 package Controlador;
 
 import ConexionABD.FacturaDML;
+import ConexionABD.MaquinaDML;
 import Modelo.Factura;
+import Modelo.Maquina;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -42,12 +44,29 @@ public class Maquinas extends HttpServlet {
         String nextPage = "";
         String todo = request.getParameter("todo");
         
-        if (todo.equals("")) {
+        if (todo.equals("gestionMaquinas")) {
+            List<Maquina> maquinas = MaquinaDML.listar(conexion);
             
-        } else if (todo.equals("")) {
+            request.setAttribute("maquinas", maquinas);
+            nextPage = "/gestionMaquinas.jsp";
+        } else if (todo.equals("actualizarMaquina")) {
+            String tipo = request.getParameter("tipo");
+            String estado = request.getParameter("estado");
+            int idMaquina = Integer.parseInt(request.getParameter("id"));
             
-        } else if (todo.equals("")) {
+            MaquinaDML.actualizarMaquina(conexion, tipo, estado, idMaquina);
+            nextPage = "/administrador.jsp";
+        } else if (todo.equals("crearMaquina")) {
+            String tipo = request.getParameter("tipo");
+            String estado = request.getParameter("estado");
             
+            MaquinaDML.insertar(conexion, tipo, estado);
+            nextPage = "/administrador.jsp";
+        } else if (todo.equals("eliminarMaquina")) {
+            int idMaquina = Integer.parseInt(request.getParameter("id"));
+            
+            MaquinaDML.eliminar(conexion, idMaquina);
+            nextPage = "/administrador.jsp";
         }
         
         
