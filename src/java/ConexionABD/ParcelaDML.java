@@ -73,6 +73,18 @@ public class ParcelaDML {
         return lista;
     }
     
+    public static boolean actualizarParcela(Connection BD, int idAgricultor, String ubicacion, double superficie, String ccaa, int idParcela) {
+        try {
+            Statement st = BD.createStatement();
+            
+            st.executeUpdate("UPDATE parcelas SET ID_Agricultor = '" + idAgricultor + "', Ubicacion = '" + ubicacion + "', Superficie = '" + superficie + "', Comunidad_Autonoma = '" + ccaa + "' WHERE ID = '" + idParcela + "'");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public static boolean eliminar(Connection BD, int id) {
         try {
             Statement st = BD.createStatement();

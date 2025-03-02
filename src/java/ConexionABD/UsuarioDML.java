@@ -100,5 +100,22 @@ public class UsuarioDML {
         return usuario;
     }
     
+    public static ArrayList<Usuario> obtenerAgricultores(Connection BD) {
+        String consulta = "SELECT ID FROM usuarios WHERE Tipo='Agricultor'";
+        ArrayList<Usuario> lista = new ArrayList<>();
+        try (Statement st = BD.createStatement(); ResultSet rs = st.executeQuery(consulta)){
+            
+            while (rs.next()) {
+                Usuario usuario = new Usuario(
+                    rs.getInt("ID"));
+                lista.add(usuario);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    } 
+    
     
 }

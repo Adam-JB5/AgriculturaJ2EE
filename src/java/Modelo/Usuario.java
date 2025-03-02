@@ -16,6 +16,10 @@ public class Usuario {
     private String email;
     private String contrasenna;
     private String tipo;
+    
+    public Usuario(int id) {
+        this.id = id;
+    }
 
     public Usuario(int id, String nombre, String apellidos, String email, String contrasenna, String tipo) {
         this.id = id;

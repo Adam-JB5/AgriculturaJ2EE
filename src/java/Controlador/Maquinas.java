@@ -5,12 +5,19 @@
  */
 package Controlador;
 
+import ConexionABD.FacturaDML;
+import Modelo.Factura;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -30,6 +37,23 @@ public class Maquinas extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        Connection conexion = ConexionABD.Conexion.getConexion();
+        String nextPage = "";
+        String todo = request.getParameter("todo");
+        
+        if (todo.equals("")) {
+            
+        } else if (todo.equals("")) {
+            
+        } else if (todo.equals("")) {
+            
+        }
+        
+        
+        ServletContext servletContext = getServletContext();
+        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(nextPage);
+        requestDispatcher.forward(request, response);
         
     }
 
