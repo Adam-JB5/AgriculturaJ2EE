@@ -4,9 +4,33 @@
         <servlet-name>Controlador</servlet-name>
         <servlet-class>Controlador.Controlador</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Parcelas</servlet-name>
+        <servlet-class>Controlador.Parcelas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Maquinas</servlet-name>
+        <servlet-class>Controlador.Maquinas</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Trabajos</servlet-name>
+        <servlet-class>Controlador.Trabajos</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Controlador</servlet-name>
         <url-pattern>/Controlador</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Parcelas</servlet-name>
+        <url-pattern>/Parcelas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Maquinas</servlet-name>
+        <url-pattern>/Maquinas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Trabajos</servlet-name>
+        <url-pattern>/Trabajos</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

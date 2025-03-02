@@ -5,8 +5,12 @@
  */
 package Controlador;
 
+import ConexionABD.MaquinaDML;
+import ConexionABD.ParcelaDML;
 import ConexionABD.TrabajoDML;
 import ConexionABD.UsuarioDML;
+import Modelo.Maquina;
+import Modelo.Parcela;
 import Modelo.Trabajo;
 import Modelo.Usuario;
 import java.io.IOException;
@@ -20,13 +24,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.apache.tomcat.jni.SSLContext;
 
 /**
  *
  * @author adamj
  */
-public class Controlador extends HttpServlet {
+public class Trabajos extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,67 +48,58 @@ public class Controlador extends HttpServlet {
         String nextPage = "";
         String todo = request.getParameter("todo");
         
-        
-        
-        
-        if (todo.equals("inicioSesion")) {
-            String email = request.getParameter("email");
-            String contra = request.getParameter("contra");
+        if (todo.equals("iniciarTrabajoPagina")) {
+            // Obtener listas desde los DAOs
+            HttpSession session = request.getSession();
+            int idMaquinista = (int) session.getAttribute("id");
+            List<Trabajo> trabajos = TrabajoDML.obtenerTrabajosAsignados(conexion, idMaquinista);
+            List<Parcela> parcelas = ParcelaDML.listar(conexion);
+            List<Usuario> usuarios = UsuarioDML.listar(conexion);
+            List<Maquina> maquinas = MaquinaDML.listar(conexion);
             
-            Usuario usuario = UsuarioDML.obtenerUsuario(conexion, email, contra);
+            // Pasar listas como atributos del request
+            request.setAttribute("trabajos", trabajos);
+            request.setAttribute("parcelas", parcelas);
+            request.setAttribute("maquinistas", usuarios);
+            request.setAttribute("maquinas", maquinas);
+            nextPage = "/iniciarTrabajos.jsp";
             
-            if (usuario != null) {
-                HttpSession session = request.getSession(true);
-                session.setAttribute("id", usuario.getId());
-                session.setAttribute("nombre", usuario.getNombre());
-                session.setAttribute("email", usuario.getEmail());
-                session.setAttribute("contrasenna", usuario.getContrasenna());
-                session.setAttribute("tipo", usuario.getTipo());
-                
-                // Redirigir según el tipo de usuario
-                switch (usuario.getTipo()) {
-                    case "Administrador":
-                        nextPage = "/administrador.jsp";
-                        break;
-                    case "Agricultor":
-                        nextPage = "/agricultor.jsp";
-                        break;
-                    case "Maquinista":
-//                        int idMaquinista = (int) session.getAttribute("id");
-//                        List<Trabajo> trabajos = TrabajoDML.obtenerTrabajosFinalizados(conexion, idMaquinista);
-//                        request.setAttribute("trabajos", trabajos);
-                        nextPage = "/maquinista.jsp";
-                        break;
-                    default:
-                        nextPage = "/sinAlta.jsp";
-                }
-            } else {
-                request.setAttribute("error", "Usuario o contraseña incorrectos");
-                nextPage = "/login.jsp";
-            }
+        } else if (todo.equals("finalizarTrabajoPagina")) {
+            // Obtener listas desde los DAOs
+            HttpSession session = request.getSession();
+            int idMaquinista = (int) session.getAttribute("id");
+            List<Trabajo> trabajos = TrabajoDML.obtenerTrabajosIniciados(conexion, idMaquinista);
+            List<Parcela> parcelas = ParcelaDML.listar(conexion);
+            List<Usuario> usuarios = UsuarioDML.listar(conexion);
+            List<Maquina> maquinas = MaquinaDML.listar(conexion);
             
+            // Pasar listas como atributos del request
+            request.setAttribute("trabajos", trabajos);
+            request.setAttribute("parcelas", parcelas);
+            request.setAttribute("maquinistas", usuarios);
+            request.setAttribute("maquinas", maquinas);
+            nextPage = "/finalizarTrabajos.jsp";
             
-        } else if (todo.equals("registroUsuario")) {
-            String nombre = request.getParameter("nombre");
-            String apellidos = request.getParameter("apellidos");
-            String email = request.getParameter("email");
-            String contrasenna = request.getParameter("contra");
+        } else if (todo.equals("iniciarTrabajo")) {
+            String estado = request.getParameter("estado");
+            String fechaInicio = request.getParameter("fechaInicio");
+            int id = Integer.parseInt(request.getParameter("id"));
+            TrabajoDML.iniciarTrabajo(conexion,estado, fechaInicio, id);
+            nextPage = "/maquinista.jsp";
             
-            UsuarioDML.insertar(conexion, nombre, apellidos, email, contrasenna);
-            nextPage = "/login.jsp";
-        } else if (todo.equals("cerrarSesion")) {
-            HttpSession session = request.getSession(false); // Obtener la sesión si existe
-            if (session != null) {
-                session.invalidate(); // Invalidar la sesión
-            }
-            nextPage = "/login.jsp"; // Redirigir a la página de login
+        } else if (todo.equals("finalizarTrabajo")) {
+            String estado = request.getParameter("estado");
+            String fechaFin = request.getParameter("fechaFin");
+            int id = Integer.parseInt(request.getParameter("id"));
+            TrabajoDML.finalizarTrabajo(conexion,estado, fechaFin, id);
+            nextPage = "/maquinista.jsp";
         }
-        
         
         
         ServletContext servletContext = getServletContext();
         RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(nextPage);
         requestDispatcher.forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -23,7 +23,7 @@
         <% } %>
         <div id="cuadroForm">
 
-            <h1>AGRIWARE<img src="media/img/agricultor.png" alt="" width="30" height="30"></h1>
+            <h1>AGRIWARE<img src="media/img/Agricultor.png" alt="" width="30" height="30"></h1>
             <p style="color:rgb(167, 167, 167);">¿Todavía no tienes usuario?&nbsp;&nbsp;&nbsp;<a style="text-decoration: none;" href="./registro.jsp">REGÍSTRATE</a></p><br>
 
             <form action="Controlador" method="post">
