@@ -52,6 +52,27 @@ public class ParcelaDML {
         return lista;
     }
     
+    public static ArrayList<Parcela> obtenerParcelasAgricultor(Connection BD, int idAgricultor) {
+        String consulta = "SELECT * FROM parcelas WHERE ID_Agricultor = '" + idAgricultor + "'";
+        ArrayList<Parcela> lista = new ArrayList<>();
+        try (Statement st = BD.createStatement(); ResultSet rs = st.executeQuery(consulta)){
+            
+            while (rs.next()) {
+                Parcela parcela = new Parcela(
+                    rs.getInt("ID"),
+                    rs.getInt("ID_agricultor"),
+                    rs.getString("Ubicacion"),
+                    rs.getDouble("Superficie"),
+                    rs.getString("Comunidad_Autonoma"));
+                lista.add(parcela);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
     public static boolean eliminar(Connection BD, int id) {
         try {
             Statement st = BD.createStatement();

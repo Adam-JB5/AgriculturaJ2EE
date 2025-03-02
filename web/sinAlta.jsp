@@ -12,6 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello WoAAAAAAAAArld!</h1>
+        <h1>TODAVÍA NO HAS SIDO DADO DE ALTA</h1>
+        <h1>COMUNÍCASELO AL ADMINISTRADOR DEL SISTEMA</h1>
     </body>
 </html>

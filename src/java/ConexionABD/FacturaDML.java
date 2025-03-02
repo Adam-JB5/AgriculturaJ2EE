@@ -52,6 +52,63 @@ public class FacturaDML {
         return lista;
     }
     
+    public static ArrayList<Factura> listarFacturasPorPagar(Connection BD, int idAgricultor) {
+        String consulta = "SELECT f.* FROM facturas f JOIN trabajos t ON f.ID_Trabajo = t.ID JOIN parcelas p ON t.ID_Parcela = p.ID WHERE p.ID_Agricultor = '" + idAgricultor + "' AND f.Estado = 'Pendiente de pago'";
+        ArrayList<Factura> lista = new ArrayList<>();
+        try (Statement st = BD.createStatement(); ResultSet rs = st.executeQuery(consulta)){
+            
+            while (rs.next()) {
+                Factura factura = new Factura(
+                    rs.getInt("ID"),
+                    rs.getInt("ID_Trabajo"),
+                    rs.getDouble("Dinero"),
+                    rs.getString("Estado"),
+                    rs.getDate("Fecha_Emision"),
+                    rs.getDate("Fecha_Pago"));
+                lista.add(factura);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
+    public static ArrayList<Factura> listarFacturasPagadas(Connection BD, int idAgricultor) {
+        String consulta = "SELECT f.* FROM facturas f JOIN trabajos t ON f.ID_Trabajo = t.ID JOIN parcelas p ON t.ID_Parcela = p.ID WHERE p.ID_Agricultor = '" + idAgricultor + "' AND f.Estado = 'Pagada'";
+        ArrayList<Factura> lista = new ArrayList<>();
+        try (Statement st = BD.createStatement(); ResultSet rs = st.executeQuery(consulta)){
+            
+            while (rs.next()) {
+                Factura factura = new Factura(
+                    rs.getInt("ID"),
+                    rs.getInt("ID_Trabajo"),
+                    rs.getDouble("Dinero"),
+                    rs.getString("Estado"),
+                    rs.getDate("Fecha_Emision"),
+                    rs.getDate("Fecha_Pago"));
+                lista.add(factura);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
+    public static boolean pagarFactura(Connection BD, int idFactura) {
+        try {
+            Statement st = BD.createStatement();
+
+            st.executeUpdate("UPDATE facturas SET Estado = 'Pagada', Fecha_Pago = NOW() WHERE ID = '" + idFactura + "'");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+    }
+    
     public static boolean eliminar(Connection BD, int id) {
         try {
             Statement st = BD.createStatement();

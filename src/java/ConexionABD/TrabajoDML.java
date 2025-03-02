@@ -102,8 +102,56 @@ public class TrabajoDML {
         return lista;
     }
     
+    public static ArrayList<Trabajo> obtenerTrabajosIniciadosAgricultor(Connection BD, int idAgricultor) {
+        String consulta = "SELECT * FROM trabajos WHERE Estado = 'Iniciado' AND ID_Parcela IN (SELECT ID FROM parcelas WHERE ID_Agricultor = '" + idAgricultor + "')";
+        ArrayList<Trabajo> lista = new ArrayList<>();
+        try (Statement st = BD.createStatement(); ResultSet rs = st.executeQuery(consulta)){
+            
+            while (rs.next()) {
+                Trabajo trabajo = new Trabajo(
+                    rs.getInt("ID"),
+                    rs.getInt("ID_parcela"),
+                    rs.getInt("ID_Maquinista"),
+                    rs.getInt("ID_Maquina"),
+                    rs.getString("Tipo"),
+                    rs.getString("Estado"),
+                    rs.getDate("Fecha_Inicio"),
+                    rs.getDate("Fecha_Fin"));
+                lista.add(trabajo);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
     public static ArrayList<Trabajo> obtenerTrabajosFinalizados(Connection BD, int idMaquinista) {
         String consulta = "SELECT * FROM trabajos WHERE Estado = 'Finalizado' AND ID_Maquinista = '" + idMaquinista + "'";
+        ArrayList<Trabajo> lista = new ArrayList<>();
+        try (Statement st = BD.createStatement(); ResultSet rs = st.executeQuery(consulta)){
+            
+            while (rs.next()) {
+                Trabajo trabajo = new Trabajo(
+                    rs.getInt("ID"),
+                    rs.getInt("ID_parcela"),
+                    rs.getInt("ID_Maquinista"),
+                    rs.getInt("ID_Maquina"),
+                    rs.getString("Tipo"),
+                    rs.getString("Estado"),
+                    rs.getDate("Fecha_Inicio"),
+                    rs.getDate("Fecha_Fin"));
+                lista.add(trabajo);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
+    public static ArrayList<Trabajo> obtenerTrabajosFinalizadosAgricultor(Connection BD, int idAgricultor) {
+        String consulta = "SELECT * FROM trabajos WHERE Estado = 'Finalizado' AND ID_Parcela IN (SELECT ID FROM parcelas WHERE ID_Agricultor = '" + idAgricultor + "')";
         ArrayList<Trabajo> lista = new ArrayList<>();
         try (Statement st = BD.createStatement(); ResultSet rs = st.executeQuery(consulta)){
             

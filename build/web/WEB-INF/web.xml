@@ -16,6 +16,10 @@
         <servlet-name>Trabajos</servlet-name>
         <servlet-class>Controlador.Trabajos</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Facturas</servlet-name>
+        <servlet-class>Controlador.Facturas</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Controlador</servlet-name>
         <url-pattern>/Controlador</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>Trabajos</servlet-name>
         <url-pattern>/Trabajos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Facturas</servlet-name>
+        <url-pattern>/Facturas</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

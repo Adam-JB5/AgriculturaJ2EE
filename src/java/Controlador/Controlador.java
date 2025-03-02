@@ -63,21 +63,25 @@ public class Controlador extends HttpServlet {
                 session.setAttribute("tipo", usuario.getTipo());
                 
                 // Redirigir según el tipo de usuario
-                switch (usuario.getTipo()) {
-                    case "Administrador":
-                        nextPage = "/administrador.jsp";
-                        break;
-                    case "Agricultor":
-                        nextPage = "/agricultor.jsp";
-                        break;
-                    case "Maquinista":
-//                        int idMaquinista = (int) session.getAttribute("id");
-//                        List<Trabajo> trabajos = TrabajoDML.obtenerTrabajosFinalizados(conexion, idMaquinista);
-//                        request.setAttribute("trabajos", trabajos);
-                        nextPage = "/maquinista.jsp";
-                        break;
-                    default:
-                        nextPage = "/sinAlta.jsp";
+                if (usuario.getTipo() == null) {
+                    nextPage = "/sinAlta.jsp";
+                } else {
+                    switch (usuario.getTipo()) {
+                        case "Administrador":
+                            nextPage = "/administrador.jsp";
+                            break;
+                        case "Agricultor":
+                            nextPage = "/agricultor.jsp";
+                            break;
+                        case "Maquinista":
+    //                        int idMaquinista = (int) session.getAttribute("id");
+    //                        List<Trabajo> trabajos = TrabajoDML.obtenerTrabajosFinalizados(conexion, idMaquinista);
+    //                        request.setAttribute("trabajos", trabajos);
+                            nextPage = "/maquinista.jsp";
+                            break;
+                        default:
+                            nextPage = "/sinAlta.jsp";
+                    }
                 }
             } else {
                 request.setAttribute("error", "Usuario o contraseña incorrectos");
