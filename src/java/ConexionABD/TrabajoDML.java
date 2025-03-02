@@ -30,8 +30,74 @@ public class TrabajoDML {
         }
     }
     
+    public static boolean asignarTrabajo(Connection BD, int idTrabajo, int idParcela, int idMaquinista, int idMaquina, String tipo, String estado) {
+        try {
+            Statement st = BD.createStatement();
+            
+            // Verificar que la máquina esté libre y su tipo coincida con el del trabajo
+            String consultaMaquina = "SELECT Tipo, Estado FROM maquinas WHERE ID = " + idMaquina;
+            ResultSet rs = st.executeQuery(consultaMaquina);
+            if (rs.next()) {
+                String tipoMaquina = rs.getString("Tipo");
+                String estadoMaquina = rs.getString("Estado");
+                
+                if (!tipoMaquina.equals(tipo)) {
+                    System.out.println("Error: El tipo de trabajo debe coincidir con el tipo de máquina.");
+                    return false;
+                }
+                
+                if (!estadoMaquina.equals("Libre")) {
+                    System.out.println("Error: La máquina no está libre.");
+                    return false;
+                }
+            } else {
+                System.out.println("Error: No se encontró la máquina en la base de datos.");
+                return false;
+            }
+            
+            // Asignar el trabajo
+            String sqlAsignar = "UPDATE trabajos SET ID_Parcela='" + idParcela + "',ID_Maquinista='" + idMaquinista + "',ID_Maquina='" + idMaquina + "',Tipo='" + tipo + "',Estado='" + estado + "' WHERE ID = '" + idTrabajo + "'";
+            st.executeUpdate(sqlAsignar);
+            
+            // Si el trabajo fue asignado, actualizar el estado de la máquina
+            if ("Asignado".equals(estado)) {
+                String sqlActualizarMaquina = "UPDATE maquinas SET Estado = 'Ocupada' WHERE ID = " + idMaquina;
+                st.executeUpdate(sqlActualizarMaquina);
+            }
+            
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public static ArrayList<Trabajo> listar(Connection BD) {
         String consulta = "SELECT * FROM trabajos";
+        ArrayList<Trabajo> lista = new ArrayList<>();
+        try (Statement st = BD.createStatement(); ResultSet rs = st.executeQuery(consulta)){
+            
+            while (rs.next()) {
+                Trabajo trabajo = new Trabajo(
+                    rs.getInt("ID"),
+                    rs.getInt("ID_parcela"),
+                    rs.getInt("ID_Maquinista"),
+                    rs.getInt("ID_Maquina"),
+                    rs.getString("Tipo"),
+                    rs.getString("Estado"),
+                    rs.getDate("Fecha_Inicio"),
+                    rs.getDate("Fecha_Fin"));
+                lista.add(trabajo);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
+    public static ArrayList<Trabajo> obtenerTrabajosNoAsignados(Connection BD) {
+        String consulta = "SELECT * FROM trabajos WHERE Estado = 'No asignado'";
         ArrayList<Trabajo> lista = new ArrayList<>();
         try (Statement st = BD.createStatement(); ResultSet rs = st.executeQuery(consulta)){
             

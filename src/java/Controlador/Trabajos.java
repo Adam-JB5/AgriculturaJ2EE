@@ -94,7 +94,35 @@ public class Trabajos extends HttpServlet {
             TrabajoDML.finalizarTrabajo(conexion,estado, fechaFin, id);
             nextPage = "/maquinista.jsp";
         } else if (todo.equals("gestionTrabajos")) {
+            List<Trabajo> trabajos = TrabajoDML.listar(conexion);
+            List<Trabajo> trabajosNoAsignados = TrabajoDML.obtenerTrabajosNoAsignados(conexion);
+            List<Parcela> parcelas = ParcelaDML.listar(conexion);
+            List<Usuario> usuarios = UsuarioDML.obtenerMaquinistas(conexion);
+            List<Maquina> maquinas = MaquinaDML.listar(conexion);
             
+            request.setAttribute("trabajos", trabajos);
+            request.setAttribute("trabajosNoAsignados", trabajosNoAsignados);
+            request.setAttribute("parcelas", parcelas);
+            request.setAttribute("maquinistas", usuarios);
+            request.setAttribute("maquinas", maquinas);
+            
+            nextPage = "/gestionTrabajos.jsp";
+        } else if (todo.equals("crearTrabajo")) {
+            String tipo = request.getParameter("tipo");
+            String estado = request.getParameter("estado");
+            
+            TrabajoDML.insertar(conexion, tipo, estado);
+            nextPage = "/administrador.jsp";
+        } else if (todo.equals("asignarTrabajo")) {
+            int idTrabajo = Integer.parseInt(request.getParameter("id"));
+            int idParcela = Integer.parseInt(request.getParameter("IDparcela"));
+            int idMaquinista = Integer.parseInt(request.getParameter("IDmaquinista"));
+            int idMaquina = Integer.parseInt(request.getParameter("IDmaquina"));
+            String tipo = request.getParameter("tipo");
+            String estado = request.getParameter("estado");
+            
+            TrabajoDML.asignarTrabajo(conexion, idTrabajo, idParcela, idMaquinista, idMaquina, tipo, estado);
+            nextPage = "/administrador.jsp";
         }
         
         
